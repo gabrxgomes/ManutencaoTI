@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro de Equipamentos</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Cadastro de Equipamentos</h1>
+    <form id="cadastroForm">
+        <label for="patrimonio">Patrimônio:</label>
+        <input type="text" id="patrimonio" name="patrimonio" required>
+        
+        <label for="nomeEquipamento">Nome do Equipamento:</label>
+        <input type="text" id="nomeEquipamento" name="nomeEquipamento" required>
+        
+        <label for="dataChegada">Data de Chegada:</label>
+        <input type="date" id="dataChegada" name="dataChegada" required>
+        
+        <label for="dataSaida">Data de Saída:</label>
+        <input type="date" id="dataSaida" name="dataSaida">
+        
+        <label for="descricaoServico">Descrição do Serviço:</label>
+        <textarea id="descricaoServico" name="descricaoServico"></textarea>
+        
+        <button type="submit">Cadastrar</button>
+    </form>
+
+    <script>
+        document.getElementById('cadastroForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const data = {
+                patrimonio: document.getElementById('patrimonio').value,
+                nomeEquipamento: document.getElementById('nomeEquipamento').value,
+                dataChegada: document.getElementById('dataChegada').value,
+                dataSaida: document.getElementById('dataSaida').value,
+                descricaoServico: document.getElementById('descricaoServico').value
+            };
+
+            fetch('/equipamentos/cadastro', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('Equipamento cadastrado com sucesso!');
+                document.getElementById('cadastroForm').reset();
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>

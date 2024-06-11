@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Pesquisa de Equipamentos</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Pesquisa de Equipamentos</h1>
+    <form id="pesquisaForm">
+        <label for="startDate">Data de Início:</label>
+        <input type="date" id="startDate" name="startDate" required>
+        
+        <label for="endDate">Data de Fim:</label>
+        <input type="date" id="endDate" name="endDate" required>
+        
+        <label for="patrimonio">Patrimônio:</label>
+        <input type="text" id="patrimonio" name="patrimonio">
+        
+        <button type="submit">Pesquisar</button>
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th>Patrimônio</th>
+                <th>Nome do Equipamento</th>
+                <th>Data de Chegada</th>
+                <th>Data de Saída</th>
+                <th>Descrição do Serviço</th>
+            </tr>
+        </thead>
+        <tbody id="resultados">
+            <!-- Resultados da pesquisa serão inseridos aqui -->
+        </tbody>
+    </table>
+
+    <script>
+        document.getElementById('pesquisaForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            const patrimonio = document.getElementById('patrimonio').value;
+
+            fetch(`/equipamentos/pesquisa?startDate=${startDate}&endDate=${endDate}&patrimonio=${patrimonio}`)
+            .then(response => response.json())
+            .then(data => {
+                const resultados = document.getElementById('resultados');
+                resultados.innerHTML = '';
+                
+                data.forEach(equipamento => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${equipamento.patrimonio}</td>
+                        <td>${equipamento.nomeEquipamento}</td>
+                        <td>${equipamento.dataChegada}</td>
+                        <td>${equipamento.dataSaida || ''}</td>
+                        <td>${equipamento.descricaoServico || ''}</td>
+                    `;
+                    resultados.appendChild(row);
+                });
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
