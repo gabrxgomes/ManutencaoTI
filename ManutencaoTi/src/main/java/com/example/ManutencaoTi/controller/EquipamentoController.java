@@ -1,12 +1,19 @@
 package com.example.ManutencaoTi.controller;
 
-import com.example.ManutencaoTi.model.Equipamento;
-import com.example.ManutencaoTi.service.EquipamentoService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.Date;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.ManutencaoTi.model.Equipamento;
+import com.example.ManutencaoTi.service.EquipamentoService;
 
 @RestController
 @RequestMapping("/equipamentos")
@@ -21,7 +28,10 @@ public class EquipamentoController {
     }
 
     @GetMapping("/pesquisa")
-    public List<Equipamento> pesquisar(@RequestParam("startDate") Date startDate, @RequestParam("endDate") Date endDate, @RequestParam("patrimonio") String patrimonio) {
+    public List<Equipamento> pesquisar(
+        @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
+        @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
+        @RequestParam(value = "patrimonio", required = false) String patrimonio) {
         return service.search(startDate, endDate, patrimonio);
     }
 

@@ -43,7 +43,12 @@
             const patrimonio = document.getElementById('patrimonio').value;
 
             fetch(`/equipamentos/pesquisa?startDate=${startDate}&endDate=${endDate}&patrimonio=${patrimonio}`)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
             .then(data => {
                 const resultados = document.getElementById('resultados');
                 resultados.innerHTML = '';
@@ -62,6 +67,7 @@
             })
             .catch((error) => {
                 console.error('Error:', error);
+                alert('Ocorreu um erro na pesquisa. Verifique os dados e tente novamente.');
             });
         });
     </script>

@@ -9,5 +9,6 @@ import java.util.List;
 
 @Repository
 public interface EquipamentoRepository extends JpaRepository<Equipamento, Long> {
+    List<Equipamento> findByDataChegadaBetween(Date startDate, Date endDate);
     List<Equipamento> findByDataChegadaBetweenAndPatrimonio(Date startDate, Date endDate, String patrimonio);
 }

@@ -1,12 +1,13 @@
 package com.example.ManutencaoTi.service;
 
-import com.example.ManutencaoTi.model.Equipamento;
-import com.example.ManutencaoTi.repository.EquipamentoRepository;
+import java.util.Date;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
+import com.example.ManutencaoTi.model.Equipamento;
+import com.example.ManutencaoTi.repository.EquipamentoRepository;
 
 @Service
 public class EquipamentoService {
@@ -23,6 +24,10 @@ public class EquipamentoService {
     }
 
     public List<Equipamento> search(Date startDate, Date endDate, String patrimonio) {
-        return repository.findByDataChegadaBetweenAndPatrimonio(startDate, endDate, patrimonio);
+        if (patrimonio == null || patrimonio.isEmpty()) {
+            return repository.findByDataChegadaBetween(startDate, endDate);
+        } else {
+            return repository.findByDataChegadaBetweenAndPatrimonio(startDate, endDate, patrimonio);
+        }
     }
 }
